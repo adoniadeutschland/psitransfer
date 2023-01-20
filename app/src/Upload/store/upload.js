@@ -231,7 +231,12 @@ export default {
                   progress: { percentage: 100, humanFileSize: file.humanSize, bytesUploaded: file._File.size }
                 }
               });
-              if (state.files.every(f => f.uploaded)) commit('STATE', 'uploaded', { root: true });
+              if (state.files.every(f => f.uploaded))
+                commit('STATE', 'uploaded', {
+                  root: true
+                }
+                // add eventHandler to send Mail to server-owner
+              );
             }
           }).start();
         }
