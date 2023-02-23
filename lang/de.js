@@ -54,4 +54,8 @@ module.exports = {
     "2419200": "4 Wochen",
     "4838400": "8 Wochen"
   },
+  message: "Nachricht",
+  topic: "Betreff",
+  email: "E-Mail",
+  name: "Name",
 }

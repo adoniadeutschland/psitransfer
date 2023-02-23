@@ -32,6 +32,10 @@ export default {
   state: {
     retention: null,
     password: '',
+    name: '',
+    email: '',
+    topic: '',
+    message: '',
     files: [],
     sid: getSid(),
     uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
@@ -68,6 +72,18 @@ export default {
     PASSWORD(state, pwd) {
       state.password = pwd;
     },
+    NAME(state, name) {
+      state.name = name;
+    },
+    EMAIL(state, email) {
+      state.email = email;
+    },
+    TOPIC(state, topic) {
+      state.topic = topic;
+    },
+    MESSAGE(state, message) {
+      state.message = message;
+    },
     ADD_FILE(state, file) {
       state.files.splice(0, 0, file);
     },
@@ -82,6 +98,10 @@ export default {
     },
     NEW_SESSION(state) {
       state.password = '';
+      state.name = '';
+      state.email = '';
+      state.topic = '';
+      state.message = '';
       state.files.splice(0, state.files.length);
       state.sid = md5(uuid()).toString().substr(0, 12);
     },
@@ -144,6 +164,10 @@ export default {
               sid: state.sid,
               retention: state.retention,
               password: state.password,
+              uploaderName: state.name,
+              email: state.email,
+              topic: state.topic,
+              message: state.message,
               name: file.name,
               comment: file.comment,
               type: file._File.type

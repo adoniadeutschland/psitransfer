@@ -91,7 +91,7 @@
     computed: {
       ...mapState(['state']),
       ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword']),
-      ...mapState('upload', ['sid', 'files', 'password']),
+      ...mapState('upload', ['sid', 'files', 'password', 'name', 'email', 'topic', 'message']),
       ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
       mailLnk: function() {
@@ -103,9 +103,12 @@
         return this.uploadPassRequired && this.uploadPasswordWrong !== false;
       },
       showUploadBtn() {
+        const mailPattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
         return this.files.length
           && !this.disabled
           && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
+          && this.name && mailPattern.test(this.email)
+          && this.topic
       }
     },
 

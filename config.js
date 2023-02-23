@@ -23,17 +23,17 @@ const config = {
   // keep empty to disable
   "forceHttps": '',
   // retention options in seconds:label
-  // "retentions": {
-  //   "one-time": "one time download",
-  //   "3600": "1 Hour",
-  //   "21600": "6 Hours",
-  //   "86400": "1 Day",
-  //   "259200": "3 Days",
-  //   "604800": "1 Week",
-  //   "1209600": "2 Weeks",
-  //   "2419200": "4 Weeks",
-  //   "4838400": "8 Weeks"
-  // },
+  "retentions": {
+    "one-time": "one time download",
+    "3600": "1 Hour",
+    "21600": "6 Hours",
+    "86400": "1 Day",
+    "259200": "3 Days",
+    "604800": "1 Week",
+    "1209600": "2 Weeks",
+    "2419200": "4 Weeks",
+    "4838400": "8 Weeks"
+  },
   // admin password, set to false to disable /admin page
   "adminPass": false,
   // upload password, set to false to disable
