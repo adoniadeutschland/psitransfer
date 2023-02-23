@@ -23,16 +23,28 @@
         thead
           tr
             th SID
+            th uploaderName
+            th email
+            th topic
+            th message
             th Created
             th Downloaded
             th Expire
             th Size
-        template(v-for="(bucket, sid) in db")
+        template(v-for="(bucket, sid, uploaderName, email, topic, message) in db")
           tbody(:class="{expanded: expand===sid}")
             tr.bucket(@click="expandView(sid)")
               td
-                | {{ sid }}
+                a(:href="'/' + sid ") {{ sid }}
                 icon.pull-right(name="key", v-if="sum[sid].password", title="Password protected")
+              td
+                | {{ bucket[0].metadata.uploaderName }}
+              td
+                | {{ bucket[0].metadata.email }}
+              td
+                | {{ bucket[0].metadata.topic }}
+              td
+                | {{ bucket[0].metadata.message }}
               td {{ sum[sid].created | date }}
               td
                 template(v-if="sum[sid].lastDownload") {{ sum[sid].lastDownload | date}}
@@ -45,6 +57,8 @@
             template(v-for="file in bucket")
               tr.file
                 td {{ file.metadata.name }}
+                td(colspan="3")
+                td {{ file.metadata.comment }}
                 td {{+file.metadata.createdAt | date}}
                 td
                   template(v-if="file.metadata.lastDownload") {{ +file.metadata.lastDownload | date}}
@@ -55,128 +69,127 @@
                 td.text-right {{ humanFileSize(file.size) }}
         tfoot
           tr
-            td(colspan="3")
+            td(colspan="7")
             td.text-right(colspan="2") Sum: {{ humanFileSize(sizeSum) }}
 
 </template>
 
-
 <script>
-  import 'vue-awesome/icons/exclamation-triangle';
-  import 'vue-awesome/icons/sync-alt';
-  import 'vue-awesome/icons/sign-in-alt';
-  import 'vue-awesome/icons/key';
+import "vue-awesome/icons/exclamation-triangle";
+import "vue-awesome/icons/sync-alt";
+import "vue-awesome/icons/sign-in-alt";
+import "vue-awesome/icons/key";
 
+export default {
+  name: "app",
 
-  export default {
-    name: 'app',
+  data() {
+    return {
+      db: {},
+      sum: {},
+      loggedIn: false,
+      password: "",
+      error: "",
+      passwordWrong: false,
+      expand: false,
+      sizeSum: 0
+    };
+  },
 
-    data () {
-      return {
-        db: {},
-        sum: {},
-        loggedIn: false,
-        password: '',
-        error: '',
-        passwordWrong: false,
-        expand: false,
-        sizeSum: 0
-      }
+  methods: {
+    expandView(sid) {
+      if (this.expand === sid) return (this.expand = false);
+      this.expand = sid;
     },
 
-    methods: {
-      expandView(sid) {
-        if(this.expand === sid) return this.expand = false;
-        this.expand = sid;
-      },
-
-      login() {
-        if(!this.password) return;
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'admin/data.json');
-        xhr.setRequestHeader("x-passwd", this.password);
-        xhr.onload = () => {
-          if(xhr.status === 200) {
-            try {
-              this.db = JSON.parse(xhr.responseText);
-              this.loggedIn = true;
-              this.error = '';
-              this.passwordWrong = false;
-              this.expandDb();
-            }
-            catch(e) {
-              this.error = e.toString();
-            }
-          } else {
-            if(xhr.status === 403) this.passwordWrong = true;
-            else this.error = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
+    login() {
+      if (!this.password) return;
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "admin/data.json");
+      xhr.setRequestHeader("x-passwd", this.password);
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          try {
+            this.db = JSON.parse(xhr.responseText);
+            this.loggedIn = true;
+            this.error = "";
+            this.passwordWrong = false;
+            this.expandDb();
+          } catch (e) {
+            this.error = e.toString();
           }
-        };
-        xhr.send();
-      },
-
-      expandDb() {
-        this.sizeSum = 0;
-        Object.keys(this.db).forEach(sid => {
-          const bucketSum = {
-            firstExpire: Number.MAX_SAFE_INTEGER,
-            lastDownload: 0,
-            created: Number.MAX_SAFE_INTEGER,
-            password: false,
-            size: 0
-          };
-          this.db[sid].forEach(file => {
-            bucketSum.size += file.size;
-            if(file.metadata._password) {
-              bucketSum.password = true;
-            }
-            if(+file.metadata.createdAt < bucketSum.created) {
-              bucketSum.created = +file.metadata.createdAt;
-            }
-            if(file.metadata.lastDownload && +file.metadata.lastDownload > bucketSum.lastDownload) {
-              bucketSum.lastDownload = +file.metadata.lastDownload;
-            }
-            if(file.metadata.retention === 'one-time') {
-              bucketSum.firstExpire = 'one-time';
-              file.expireDate = file.metadata.retention;
-            }
-            else {
-              file.expireDate = +file.metadata.createdAt + (+file.metadata.retention * 1000);
-              if(bucketSum.firstExpire > file.expireDate) bucketSum.firstExpire = file.expireDate;
-            }
-          });
-          this.sizeSum += bucketSum.size;
-          this.$set(this.sum, sid, bucketSum);
-        });
-      },
-
-      humanFileSize(fileSizeInBytes) {
-        let i = -1;
-        const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
-        do {
-          fileSizeInBytes = fileSizeInBytes / 1024;
-          i++;
-        } while(fileSizeInBytes > 1024);
-        return Math.max(fileSizeInBytes, 0.00).toFixed(2) + byteUnits[i];
-      },
-
+        } else {
+          if (xhr.status === 403) this.passwordWrong = true;
+          else
+            this.error = `${xhr.status} ${xhr.statusText}: ${xhr.responseText}`;
+        }
+      };
+      xhr.send();
     },
 
+    expandDb() {
+      this.sizeSum = 0;
+      Object.keys(this.db).forEach(sid => {
+        const bucketSum = {
+          firstExpire: Number.MAX_SAFE_INTEGER,
+          lastDownload: 0,
+          created: Number.MAX_SAFE_INTEGER,
+          password: false,
+          size: 0
+        };
+        this.db[sid].forEach(file => {
+          bucketSum.size += file.size;
+          if (file.metadata._password) {
+            bucketSum.password = true;
+          }
+          if (+file.metadata.createdAt < bucketSum.created) {
+            bucketSum.created = +file.metadata.createdAt;
+          }
+          if (
+            file.metadata.lastDownload &&
+            +file.metadata.lastDownload > bucketSum.lastDownload
+          ) {
+            bucketSum.lastDownload = +file.metadata.lastDownload;
+          }
+          if (file.metadata.retention === "one-time") {
+            bucketSum.firstExpire = "one-time";
+            file.expireDate = file.metadata.retention;
+          } else {
+            file.expireDate =
+              +file.metadata.createdAt + +file.metadata.retention * 1000;
+            if (bucketSum.firstExpire > file.expireDate)
+              bucketSum.firstExpire = file.expireDate;
+          }
+        });
+        this.sizeSum += bucketSum.size;
+        this.$set(this.sum, sid, bucketSum);
+      });
+    },
 
+    humanFileSize(fileSizeInBytes) {
+      let i = -1;
+      const byteUnits = [" kB", " MB", " GB", " TB", "PB", "EB", "ZB", "YB"];
+      do {
+        fileSizeInBytes = fileSizeInBytes / 1024;
+        i++;
+      } while (fileSizeInBytes > 1024);
+      return Math.max(fileSizeInBytes, 0.0).toFixed(2) + byteUnits[i];
+    }
   }
+};
 </script>
 
 <style>
-  .bucket {
-    cursor: pointer;
-  }
-  .expanded {
-    background: #fafafa;
-  }
-  .expanded .bucket td {
-    font-weight: bold;
-  }
-  tfoot {
-    font-weight: bold;
-  }
+.bucket {
+  cursor: pointer;
+}
+.expanded {
+  background: #fafafa;
+}
+.expanded .bucket td {
+  font-weight: bold;
+}
+tfoot {
+  font-weight: bold;
+}
 </style>
