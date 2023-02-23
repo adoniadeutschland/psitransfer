@@ -1,9 +1,11 @@
 module.exports = {
   accessLog: "dev",
   retentions: {
-    2629743: "4 Weeks",
+    2419200: "4 Weeks",
   },
-  defaultRetention: "2629743",
+  defaultRetention: "2419200",
+  // expire every file after maxAge (eg never downloaded one-time files)
+  maxAge: 3600 * 24 * 35, // 75 days
   showRetention: false,
   showBucketPassword: false,
   adminPass: "admin",
