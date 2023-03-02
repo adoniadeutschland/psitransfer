@@ -1,15 +1,14 @@
-import md5 from 'crypto-js/md5';
+import md5 from "crypto-js/md5";
 import * as tus from "tus-js-client";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 export function humanFileSize(fileSizeInBytes) {
   let i = -1;
-  const byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+  const byteUnits = [" kB", " MB", " GB", " TB", "PB", "EB", "ZB", "YB"];
   do {
     fileSizeInBytes = fileSizeInBytes / 1024;
     i++;
-  }
-  while (fileSizeInBytes > 1024);
+  } while (fileSizeInBytes > 1024);
   return Math.max(fileSizeInBytes, 0.01).toFixed(2) + byteUnits[i];
 }
 
@@ -22,7 +21,9 @@ function getSid() {
   if (match) {
     return match[1];
   } else {
-    return md5(uuid()).toString().substr(0, 12);
+    return md5(uuid())
+      .toString()
+      .substr(0, 12);
   }
 }
 
@@ -31,35 +32,38 @@ export default {
 
   state: {
     retention: null,
-    password: '',
-    name: '',
-    email: '',
-    topic: '',
-    message: '',
+    password: "",
+    name: "",
+    email: "",
+    topic: "",
+    message: "",
     files: [],
     sid: getSid(),
-    uploadURI: (window.PSITRANSFER_UPLOAD_PATH || '/') + 'files',
+    uploadURI: (window.PSITRANSFER_UPLOAD_PATH || "/") + "files"
   },
 
   getters: {
     shareUrl: state => {
-      return document.head.getElementsByTagName('base')[0].href + state.sid;
+      return document.head.getElementsByTagName("base")[0].href + state.sid;
     },
     percentUploaded: (state, getters) => {
       return Math.min(
-        Math.round(getters.bytesUploaded / getters.bucketSize * 100), 100);
+        Math.round((getters.bytesUploaded / getters.bucketSize) * 100),
+        100
+      );
     },
-    bytesUploaded: state => state.files.reduce((sum, file) => sum + file.progress.bytesUploaded, 0),
+    bytesUploaded: state =>
+      state.files.reduce((sum, file) => sum + file.progress.bytesUploaded, 0),
     bucketSize: state => {
       return state.files.reduce((sum, file) => sum + file._File.size, 0);
     },
     bucketSizeError: (state, getters, rootState) => {
       const maxBucketSize = rootState.config && rootState.config.maxBucketSize;
-      if(!maxBucketSize) return false;
-      if(getters.bucketSize > maxBucketSize) {
+      if (!maxBucketSize) return false;
+      if (getters.bucketSize > maxBucketSize) {
         return rootState.lang.bucketSizeExceed
-          .replace('%%', humanFileSize(getters.bucketSize))
-          .replace('%%', humanFileSize(maxBucketSize));
+          .replace("%%", humanFileSize(getters.bucketSize))
+          .replace("%%", humanFileSize(maxBucketSize));
       }
       return false;
     }
@@ -97,14 +101,16 @@ export default {
       }
     },
     NEW_SESSION(state) {
-      state.password = '';
-      state.name = '';
-      state.email = '';
-      state.topic = '';
-      state.message = '';
+      state.password = "";
+      state.name = "";
+      state.email = "";
+      state.topic = "";
+      state.message = "";
       state.files.splice(0, state.files.length);
-      state.sid = md5(uuid()).toString().substr(0, 12);
-    },
+      state.sid = md5(uuid())
+        .toString()
+        .substr(0, 12);
+    }
   },
 
   actions: {
@@ -115,14 +121,14 @@ export default {
         const { maxFileSize } = rootState.config;
         if (maxFileSize && files[i].size > maxFileSize) {
           error = rootState.lang.fileSizeExceed
-            .replace('%%', humanFileSize(files[i].size))
-            .replace('%%', humanFileSize(maxFileSize))
+            .replace("%%", humanFileSize(files[i].size))
+            .replace("%%", humanFileSize(maxFileSize));
         }
         // wrap, don't change the HTML5-File-API object
-        commit('ADD_FILE', {
+        commit("ADD_FILE", {
           _File: files[i],
           name: files[i].name,
-          comment: '',
+          comment: "",
           progress: { percentage: 0, humanSize: 0, bytesUploaded: 0 },
           uploaded: false,
           error,
@@ -133,26 +139,27 @@ export default {
       }
     },
 
-    removeFile({commit, state}, file) {
-      commit('REMOVE_FILE', file);
+    removeFile({ commit, state }, file) {
+      commit("REMOVE_FILE", file);
     },
 
     upload({ commit, dispatch, state, rootState }) {
-      commit('STATE', 'uploading', { root: true });
-      commit('ERROR', '', { root: true });
+      commit("STATE", "uploading", { root: true });
+      commit("ERROR", "", { root: true });
 
       if (onOnlineHandler === null) {
         onOnlineHandler = function() {
           onOnlineHandlerAttached = false;
-          commit('ERROR', false, { root: true });
-          dispatch('upload');
-        }
+          commit("ERROR", false, { root: true });
+          dispatch("upload");
+        };
       }
-      if (onOnlineHandlerAttached) window.removeEventListener('online', onOnlineHandler);
+      if (onOnlineHandlerAttached)
+        window.removeEventListener("online", onOnlineHandler);
 
       // upload all files in parallel
       state.files.forEach(async file => {
-        file.error = '';
+        file.error = "";
         file._retries = 0;
         file._retryDelay = 500;
 
@@ -182,34 +189,44 @@ export default {
             retryDelays: null,
             onAfterResponse: function(req, res) {
               // Remember uploadUrl for resuming
-              if(req.getMethod() === 'POST'
-                && req.getURL() === this.endpoint
-                && res.getStatus() === 201
+              if (
+                req.getMethod() === "POST" &&
+                req.getURL() === this.endpoint &&
+                res.getStatus() === 201
               ) {
-                file._uploadUrl = res.getHeader('location');
+                file._uploadUrl = res.getHeader("location");
               }
             },
             onError(error) {
               let jsonResMessage = null;
               try {
-                jsonResMessage = JSON.parse(error.originalResponse.getBody()).message;
-              }
-              catch (e) {
-              }
+                jsonResMessage = JSON.parse(error.originalResponse.getBody())
+                  .message;
+              } catch (e) {}
               // browser is offline
               if (!navigator.onLine) {
-                commit('ERROR', 'You are offline. Your uploads will resume as soon as you are back online.', { root: true });
+                commit(
+                  "ERROR",
+                  "You are offline. Your uploads will resume as soon as you are back online.",
+                  { root: true }
+                );
                 if (!onOnlineHandlerAttached) {
                   onOnlineHandlerAttached = true;
                   // attach onOnline handler
-                  window.addEventListener('online', onOnlineHandler);
+                  window.addEventListener("online", onOnlineHandler);
                 }
               }
               // Client Error
-              else if (error && error.originalResponse && error.originalResponse._xhr &&
-                error.originalResponse._xhr.status >= 400 && error.originalResponse._xhr.status < 500) {
-                commit('UPDATE_FILE', {
-                  file, data: {
+              else if (
+                error &&
+                error.originalResponse &&
+                error.originalResponse._xhr &&
+                error.originalResponse._xhr.status >= 400 &&
+                error.originalResponse._xhr.status < 500
+              ) {
+                commit("UPDATE_FILE", {
+                  file,
+                  data: {
                     error: jsonResMessage || error.message || error.toString()
                   }
                 });
@@ -217,21 +234,28 @@ export default {
               // Generic Error
               else {
                 if (file._retries > 30) {
-                  commit('UPDATE_FILE', {
-                    file, data: {
+                  commit("UPDATE_FILE", {
+                    file,
+                    data: {
                       error: jsonResMessage || error.message || error.toString()
                     }
                   });
                   if (state.files.every(f => f.error)) {
-                    commit('STATE', 'uploadError', { root: true });
-                    commit('ERROR', 'Upload failed.', { root: true });
+                    commit("STATE", "uploadError", { root: true });
+                    commit("ERROR", "Upload failed.", { root: true });
                   }
                   return;
                 }
 
                 file._retryDelay = Math.min(file._retryDelay * 1.7, 10000);
                 file._retries++;
-                if (console) console.log(error.message || error.toString(), '; will retry in', file._retryDelay, 'ms');
+                if (console)
+                  console.log(
+                    error.message || error.toString(),
+                    "; will retry in",
+                    file._retryDelay,
+                    "ms"
+                  );
                 setTimeout(startTusUpload, file._retryDelay);
               }
             },
@@ -239,34 +263,87 @@ export default {
               // uploaded=total gets also emitted on error
               if (bytesUploaded === bytesTotal) return;
 
-              file.error = '';
+              file.error = "";
               file._retries = 0;
               file._retryDelay = 500;
-              const percentage = Math.round(bytesUploaded / bytesTotal * 10000) / 100;
-              commit('UPDATE_FILE', {
+              const percentage =
+                Math.round((bytesUploaded / bytesTotal) * 10000) / 100;
+              commit("UPDATE_FILE", {
                 file,
-                data: { progress: { percentage, humanSize: humanFileSize(bytesUploaded), bytesUploaded } }
+                data: {
+                  progress: {
+                    percentage,
+                    humanSize: humanFileSize(bytesUploaded),
+                    bytesUploaded
+                  }
+                }
               });
             },
             onSuccess() {
-              commit('UPDATE_FILE', {
-                file, data: {
+              commit("UPDATE_FILE", {
+                file,
+                data: {
                   uploaded: true,
-                  progress: { percentage: 100, humanFileSize: file.humanSize, bytesUploaded: file._File.size }
+                  progress: {
+                    percentage: 100,
+                    humanFileSize: file.humanSize,
+                    bytesUploaded: file._File.size
+                  }
                 }
               });
               if (state.files.every(f => f.uploaded))
-                commit('STATE', 'uploaded', {
-                  root: true
-                }
-                // add eventHandler to send Mail to server-owner
-              );
+                commit(
+                  "STATE",
+                  "uploaded",
+                  {
+                    root: true
+                  }
+                  // add eventHandler to send Mail to server-owner
+                );
             }
           }).start();
-        }
+        };
+
+        const sendMail = () => {
+          let myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
+          myHeaders.append("Authorization", "Bearer" + token);
+
+          var raw = JSON.stringify({
+            message: {
+              subject: "Neuer Upload verfügbar",
+              body: {
+                contentType: "Text",
+                content: "Ein neuer Upload wurde durchgeführt."
+              },
+              toRecipients: [
+                {
+                  emailAddress: {
+                    address: "fabian.giering@adonia.de"
+                  }
+                }
+              ]
+            }
+          });
+
+          var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+          };
+
+          fetch(
+            "https://graph.microsoft.com/v1.0/users/fabian.giering@adonia.de/sendMail",
+            requestOptions
+          )
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log("error", error));
+        };
         startTusUpload();
+        sendMail();
       });
     }
   }
-
-}
+};
