@@ -303,47 +303,9 @@ export default {
             }
           }).start();
         };
-
-        const sendMail = () => {
-          let myHeaders = new Headers();
-          myHeaders.append("Content-Type", "application/json");
-          myHeaders.append("Authorization", "Bearer" + token);
-
-          var raw = JSON.stringify({
-            message: {
-              subject: "Neuer Upload verfügbar",
-              body: {
-                contentType: "Text",
-                content: "Ein neuer Upload wurde durchgeführt."
-              },
-              toRecipients: [
-                {
-                  emailAddress: {
-                    address: "fabian.giering@adonia.de"
-                  }
-                }
-              ]
-            }
-          });
-
-          var requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-          };
-
-          fetch(
-            "https://graph.microsoft.com/v1.0/users/fabian.giering@adonia.de/sendMail",
-            requestOptions
-          )
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log("error", error));
-        };
         startTusUpload();
-        sendMail();
       });
+      fetch("/sendMail", { credentials: "include", method: "POST" });
     }
   }
 };
