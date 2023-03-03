@@ -305,7 +305,14 @@ export default {
         };
         startTusUpload();
       });
-      fetch("/sendMail", { credentials: "include", method: "POST" });
+      fetch("/sendMail", {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(state)
+      });
     }
   }
 };
