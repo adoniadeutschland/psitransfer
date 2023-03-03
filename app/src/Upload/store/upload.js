@@ -316,6 +316,7 @@ export default {
         });
       }
       sendMail(state);
+      // TODO: add "email was send message to frontend"
     }
   }
 };
