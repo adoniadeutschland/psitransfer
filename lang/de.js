@@ -58,4 +58,5 @@ module.exports = {
   topic: "Betreff",
   email: "E-Mail",
   name: "Name",
+  information: "Informationen",
 }

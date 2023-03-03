@@ -2,7 +2,7 @@
   div(v-if="config")
     .panel.panel-default(:class="{'panel-info': !disabled}")
       .panel-heading
-        strong {{ $root.lang.settings }}
+        strong {{ $root.lang.information }}
       .panel-body
         .form-group(v-if="config.retentions && config.showRetention")
           label(for='retention') {{ $root.lang.retention }}

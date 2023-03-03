@@ -8,7 +8,7 @@ module.exports = {
   maxAge: 3600 * 24 * 35, // 75 days
   showRetention: false,
   showBucketPassword: false,
-  adminPass: "admin",
+  adminPass: "EyPZvn4NKl9sCVqcMdXF",
   uploadPass: false,
   baseUrl: "/",
   uploadAppPath: "/",
