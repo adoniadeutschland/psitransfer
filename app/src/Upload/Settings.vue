@@ -46,7 +46,7 @@
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'
             )
-              icon(name="key")
+              icon(name="portrait")
         div
           label(for='email') {{ $root.lang.email }}
           .input-group
@@ -62,7 +62,7 @@
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'
             )
-              icon(name="key")
+              icon(name="envelope")
         div
           label(for='topic') {{ $root.lang.topic }}
           .input-group
@@ -77,7 +77,7 @@
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'
             )
-              icon(name="key")
+              icon(name="star")
         div
           label(for='message') {{ $root.lang.message }}
           .input-group
@@ -92,12 +92,16 @@
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'
             )
-              icon(name="key")
+              icon(name="quote-left")
 </template>
 
 <script type="text/babel">
 import { mapState } from "vuex";
 import "vue-awesome/icons/key";
+import "vue-awesome/icons/star";
+import "vue-awesome/icons/portrait";
+import "vue-awesome/icons/envelope";
+import "vue-awesome/icons/quote-left";
 
 const passGen = {
   _pattern: /[A-Z0-9_\-+!]/,
