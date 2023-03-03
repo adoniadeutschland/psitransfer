@@ -305,14 +305,17 @@ export default {
         };
         startTusUpload();
       });
-      fetch("/sendMail", {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(state)
-      });
+      async function sendMail(data) {
+        const response = await fetch("/sendMail", {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+      }
+      sendMail(state);
     }
   }
 };
