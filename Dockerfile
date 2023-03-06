@@ -26,7 +26,7 @@ RUN cd app && \
     npm ci && \
     rm -rf app
 
-EXPOSE 3000
+EXPOSE 3500
 VOLUME ["/data"]
 
 USER node

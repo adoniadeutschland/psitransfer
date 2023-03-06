@@ -13,7 +13,7 @@ const config = {
   "uploadAppPath": '/',
   "iface": '0.0.0.0',
   // set to false to disable HTTP
-  "port": 3000,
+  "port": 3500,
   // HTTPS, set all 3 values to enable
   "sslPort": 8443,
   "sslKeyFile": false,
