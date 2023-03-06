@@ -14,7 +14,7 @@ module.exports = {
   uploadAppPath: "/",
   maxFileSize: Math.pow(2, 20) * 30000,
   maxBucketSize: Math.pow(2, 20) * 30000,
-  mailFrom: "PsiTransfer <psitransfer@psi.cx>",
+  mailFrom: "Adonia Medienupload <noreply@adonia.de>",
   mailTo: "fabian.giering@adonia.de",
   // "sslKeyFile": './tmp/cert.key',
   // "sslCertFile": './tmp/cert.pem',

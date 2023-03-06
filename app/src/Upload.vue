@@ -30,6 +30,8 @@
         h3.text-success
           icon.fa-fw(name="check")
           |  {{ $root.lang.uploadCompleted }}
+        div
+          |  {{ $root.lang.mailSendCompleted }}
         div.share-link
           span.title {{ $root.lang.downloadLink }}:
           |
