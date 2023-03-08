@@ -48,8 +48,8 @@
           files
         .col-sm-5
           settings
-          .text-right(v-show='showUploadBtn')
-            button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
+          .text-right
+            button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')", :disabled='!showUploadBtn')
               icon.fa-fw(name="upload")
               |  {{ $root.lang.upload }}
           .text-right(v-show="state === 'uploadError'")
