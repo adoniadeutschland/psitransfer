@@ -303,7 +303,20 @@ export default {
             }
           }).start();
         };
-        startTusUpload();
+        if (
+          ["image/", "video/", "audio/", "application/pdf", "application/x-zip-compressed"].some(word =>
+            file._File.type.startsWith(word)
+          )
+        ) {
+          startTusUpload();
+        } else {
+          commit("STATE", "uploadError", { root: true });
+          commit(
+            "ERROR",
+            "Falsches Dateiformat: "+ file._File.type + " Erlaubt sind nur Bilder, Videos, PDFs, Zips.",
+            { root: true }
+          );
+        }
       });
       async function sendMail(data) {
         const response = await fetch("/sendMail", {

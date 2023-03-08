@@ -70,6 +70,7 @@ dfn {
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
+  font-weight: bold !important;
 }
 mark {
   background: #ff0;
@@ -282,7 +283,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;

@@ -19,7 +19,7 @@
         |  {{ $root.lang.login }}
     div(v-else-if="$root.configFetched")
       .well(v-show="state === 'uploaded'")
-        .pull-right.btn-group.upload-success-btns
+        //- .pull-right.btn-group.upload-success-btns
           a.btn.btn-primary(@click.prevent="showQrCode" href="#" :title="$root.lang.showQrCode")
             icon.fa-fw(name="qrcode")
             | QR-Code
