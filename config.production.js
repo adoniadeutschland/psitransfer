@@ -15,7 +15,7 @@ module.exports = {
   maxFileSize: Math.pow(2, 20) * 30000,
   maxBucketSize: Math.pow(2, 20) * 30000,
   mailFrom: "Adonia Medienupload <noreply@adonia.de>",
-  mailTo: "fabian.giering@adonia.de",
+  mailTo: "medienupload@adonia.de",
   // "sslKeyFile": './tmp/cert.key',
   // "sslCertFile": './tmp/cert.pem',
 };
