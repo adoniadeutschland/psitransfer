@@ -304,7 +304,7 @@ export default {
           }).start();
         };
         if (
-          ["image/", "video/", "audio/", "application/pdf", "application/x-zip-compressed"].some(word =>
+          ["image/", "video/", "audio/", "application/pdf", "application/zip", "application/x-zip-compressed"].some(word =>
             file._File.type.startsWith(word)
           )
         ) {
