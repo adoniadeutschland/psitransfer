@@ -148,7 +148,7 @@ export default {
       commit("ERROR", "", { root: true });
 
       if (onOnlineHandler === null) {
-        onOnlineHandler = function() {
+        onOnlineHandler = function () {
           onOnlineHandlerAttached = false;
           commit("ERROR", false, { root: true });
           dispatch("upload");
@@ -187,7 +187,7 @@ export default {
             endpoint: state.uploadURI,
             storeFingerprintForResuming: false,
             retryDelays: null,
-            onAfterResponse: function(req, res) {
+            onAfterResponse: function (req, res) {
               // Remember uploadUrl for resuming
               if (
                 req.getMethod() === "POST" &&
@@ -202,7 +202,7 @@ export default {
               try {
                 jsonResMessage = JSON.parse(error.originalResponse.getBody())
                   .message;
-              } catch (e) {}
+              } catch (e) { }
               // browser is offline
               if (!navigator.onLine) {
                 commit(
@@ -304,7 +304,7 @@ export default {
           }).start();
         };
         if (
-          ["image/", "video/", "audio/", "application/pdf", "application/zip", "application/x-zip-compressed"].some(word =>
+          ["image/", "video/", "model/vnd.mts", "audio/", "application/pdf", "application/x-zip-compressed", "application/zip"].some(word =>
             file._File.type.startsWith(word)
           )
         ) {
@@ -313,7 +313,7 @@ export default {
           commit("STATE", "uploadError", { root: true });
           commit(
             "ERROR",
-            "Falsches Dateiformat: "+ file._File.type + " Erlaubt sind nur Bilder, Videos, PDFs, Zips.",
+            "Falsches Dateiformat: " + file._File.type + " Erlaubt sind nur Bilder, Videos, PDFs, Zips.",
             { root: true }
           );
         }
