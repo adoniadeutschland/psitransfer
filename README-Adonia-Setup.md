@@ -3,6 +3,7 @@
 ## Bauen
 
 Add `config.production.js`
+
 `$ docker build -t adoniaupload .`
 
 ## Tarfile
