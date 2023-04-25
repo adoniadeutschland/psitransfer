@@ -115,6 +115,7 @@ export default {
             this.error = "";
             this.passwordWrong = false;
             this.expandDb();
+            this.sortArray();
           } catch (e) {
             this.error = e.toString();
           }
@@ -125,6 +126,15 @@ export default {
         }
       };
       xhr.send();
+    },
+
+    sortArray() {
+      function compare(a, b) {
+        if (a.bucketSum.created < b.bucketSum.created) return -1;
+        if (a.bucketSum.created > b.bucketSum.created) return 1;
+        return 0;
+      }
+      return Object.keys(this.db).sort(compare);
     },
 
     expandDb() {
