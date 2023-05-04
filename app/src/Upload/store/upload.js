@@ -300,6 +300,8 @@ export default {
                   }
                   // add eventHandler to send Mail to server-owner
                 );
+              sendMail(state);
+
             }
           }).start();
         };
@@ -318,6 +320,7 @@ export default {
           );
         }
       });
+      // add check if upload was successfull
       async function sendMail(data) {
         const response = await fetch("/sendMail", {
           credentials: "include",
@@ -328,7 +331,7 @@ export default {
           body: JSON.stringify(data)
         });
       }
-      sendMail(state);
+      // sendMail(state);
       // TODO: add "email was send message to frontend"
     }
   }
