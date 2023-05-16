@@ -35,6 +35,7 @@ Um den Namen des Containers herauszufinden:
 Um laufende Container zu stoppen und zu löschen:
 
 `$ docker stop <containername>`
+
 `$ docker rm <containername>`
 
 ## Starten
