@@ -291,16 +291,17 @@ export default {
                   }
                 }
               });
-              if (state.files.every(f => f.uploaded))
+              if (state.files.every(f => f.uploaded)) {
                 commit(
                   "STATE",
                   "uploaded",
                   {
                     root: true
                   }
-                  // add eventHandler to send Mail to server-owner
                 );
-              sendMail(state);
+                // eventHandler to send Mail to server-owner
+                sendMail(state);
+              }
 
             }
           }).start();
