@@ -31,7 +31,7 @@
             th Downloaded
             th Expire
             th Size
-        template(v-for="(bucket, sid, uploaderName, email, topic, message) in db")
+        template(v-for="(bucket, sid, uploaderName, email, topic, message) in sortedObject")
           tbody(:class="{expanded: expand===sid}")
             tr.bucket(@click="expandView(sid)")
               td
@@ -94,6 +94,22 @@ export default {
       expand: false,
       sizeSum: 0
     };
+  },
+
+  computed: {
+    sortedObject() {
+      const sortedKeys = Object.keys(this.db).sort((a, b) => {
+        // Custom sorting logic based on your requirements
+        return this.db[b][0].expireDate - this.db[a][0].expireDate;
+      });
+
+      const sortedObject = {};
+      sortedKeys.forEach(key => {
+        sortedObject[key] = this.db[key];
+      });
+
+      return sortedObject;
+    }
   },
 
   methods: {
