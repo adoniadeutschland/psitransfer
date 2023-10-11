@@ -35,7 +35,7 @@
                 )
                   icon(name="times")
 
-        input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none", accept="image/*, video/*, audio/*, .pdf, .zip")
+        input#fileInput(type="file", @change="$store.dispatch('upload/addFiles', $event.target.files)", multiple="", :disabled="disabled", style="display: none", accept="image/*, video/*, audio/*, .mts, .pdf, .zip")
         .text-right
           a.btn.btn-success.btn-sm(onclick="document.getElementById('fileInput').click();", :disabled="disabled", v-show="files.length>0")
             icon(name="plus-circle")
