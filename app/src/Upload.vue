@@ -109,7 +109,7 @@
         return this.files.length
           && !this.disabled
           && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
-          && this.name && mailPattern.test(this.email)
+          && this.name && mailPattern.test(this.email.toLowerCase().trim())
           && this.topic
       }
     },
