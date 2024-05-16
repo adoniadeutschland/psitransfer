@@ -1,0 +1,15 @@
+services:
+  psitransfer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: adoniaupload
+    restart: unless-stopped
+    volumes: 
+      - "${DATA_PATH}:/data"
+    ports:
+      - "${PORT}:${PSITRANSFER_PORT}"
+    env_file:
+      - .env
+    
+    
