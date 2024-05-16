@@ -40,7 +40,7 @@ Um laufende Container zu stoppen und zu löschen:
 
 ## Starten
 
-`$ docker run --name="adoniaupload" -d -p 127.0.0.1:3500:80 -e PSITRANSFER_PORT=80 --env-file .env --restart on-failure:5 -v $PWD/data:/data adoniaupload`
+`$ docker run --name="adoniaupload" -d -p 127.0.0.1:3500:80 -e PSITRANSFER_PORT=80 --env-file .env --restart=on-failure:5 -v $PWD/data:/data adoniaupload`
 
 und (ggf.)
 
