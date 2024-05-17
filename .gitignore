@@ -5,3 +5,6 @@ temp
 node_modules
 npm-debug.log
 _releases
+.env
+*.tar
+config.production.js

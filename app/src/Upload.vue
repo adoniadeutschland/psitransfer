@@ -30,6 +30,8 @@
         h3.text-success
           icon.fa-fw(name="check")
           |  {{ $root.lang.uploadCompleted }}
+        div
+          |  {{ $root.lang.mailSendCompleted }}
         div.share-link
           span.title {{ $root.lang.downloadLink }}:
           |
@@ -46,8 +48,8 @@
           files
         .col-sm-5
           settings
-          .text-right(v-show='showUploadBtn')
-            button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')")
+          .text-right
+            button#uploadBtn.btn.btn-lg.btn-success(@click="$store.dispatch('upload/upload')", :disabled='!showUploadBtn')
               icon.fa-fw(name="upload")
               |  {{ $root.lang.upload }}
           .text-right(v-show="state === 'uploadError'")
@@ -91,7 +93,7 @@
     computed: {
       ...mapState(['state']),
       ...mapState('config', ['uploadPassRequired', 'uploadPass', 'requireBucketPassword', 'disableQrCode']),
-      ...mapState('upload', ['sid', 'files', 'password']),
+      ...mapState('upload', ['sid', 'files', 'password', 'name', 'email', 'topic', 'message']),
       ...mapGetters(['error', 'disabled']),
       ...mapGetters('upload', ['percentUploaded', 'shareUrl', 'bucketSize', 'bytesUploaded']),
       mailLnk: function() {
@@ -103,9 +105,12 @@
         return this.uploadPassRequired && this.uploadPasswordWrong !== false;
       },
       showUploadBtn() {
+        const mailPattern = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
         return this.files.length
           && !this.disabled
           && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
+          && this.name && mailPattern.test(this.email.toLowerCase().trim())
+          && this.topic
       }
     },
 

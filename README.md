@@ -37,7 +37,7 @@ It's an alternative to paid services like Dropbox, WeTransfer.
 
 ### Docker
 ```bash
-$ docker run -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer
+$ docker run --name="psitransfer" -p 0.0.0.0:3000:3000 -e PSITRANSFER_ADMIN_PASS=secret -v $PWD/data:/data psitrax/psitransfer 
 # data volume needs UID 1000
 $ sudo chown -R 1000 $PWD/data
 ```
