@@ -292,17 +292,11 @@ export default {
                 }
               });
               if (state.files.every(f => f.uploaded)) {
-                commit(
-                  "STATE",
-                  "uploaded",
-                  {
-                    root: true
-                  }
-                );
+                fetch(state.uploadURI + '/' + state.sid + '?lock=yes', { method: 'PATCH' });
+                commit('STATE', 'uploaded', { root: true });
                 // eventHandler to send Mail to server-owner
                 sendMail(state);
               }
-
             }
           }).start();
         };
