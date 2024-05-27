@@ -1,5 +1,12 @@
 # Docker Setup AdoniaUpload
 
+## Entwicklen
+`cd app && npm install && npm run build`
+
+dann
+
+`cd .. && npm start`
+
 ## Bauen
 
 Add `config.production.js`
