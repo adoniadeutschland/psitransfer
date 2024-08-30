@@ -15,6 +15,7 @@ module.exports = {
   uploadAppPath: "/",
   maxFileSize: Math.pow(2, 20) * 30000,
   maxBucketSize: Math.pow(2, 20) * 30000,
+  mailFrom: "PsiTransfer <psitransfer@psi.cx>"
   mailTemplate:
     "mailto:?subject=File Transfer&body=Du kannst die Dateien hier herunterladen: %%URL%%",
   // "sslKeyFile": './tmp/cert.key',
