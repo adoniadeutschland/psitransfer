@@ -57,7 +57,6 @@
               :disabled='disabled'
               :placeholder="$root.lang.required"
               required=true
-              pattern="^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
             )
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'
@@ -66,14 +65,18 @@
         div
           label(for='topic') {{ $root.lang.topic }}
           .input-group
-            input#topic.form-control(
-              type='text'
+            select#topic.form-control(
               :value='topic'
-              @input="$store.commit('upload/TOPIC', $event.target.value)"
+              @change="$store.commit('upload/TOPIC', $event.target.value)"
               :disabled='disabled'
-              :placeholder="$root.lang.required"
               required=true
             )
+              option(value='') {{ $root.lang.required }}
+              option(:value='$root.lang.topicApplication') {{ $root.lang.topicApplication }}
+              option(:value='$root.lang.topicDriverLicense') {{ $root.lang.topicDriverLicense }}
+              option(:value='$root.lang.topicConcertHall') {{ $root.lang.topicConcertHall }}
+              option(:value='$root.lang.topicSouvenirMovie') {{ $root.lang.topicSouvenirMovie }}
+              option(:value='$root.lang.topicMiscellaneous') {{ $root.lang.topicMiscellaneous }}
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'
             )
