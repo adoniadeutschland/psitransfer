@@ -1,11 +1,15 @@
 # Docker Setup AdoniaUpload
 
-## Entwicklen
+## Entwickeln
 `cd app && npm install && npm run build`
 
 dann
 
-`cd .. && npm start`
+`cd .. && npm install && npm start`
+
+oder statt `npm start` (z.B. "Der Befehl "NODE_ENV" ist entweder falsch geschrieben oder konnte nicht gefunden werden.")
+
+`node app.js`
 
 ## Bauen
 

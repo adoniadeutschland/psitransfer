@@ -1,9 +1,10 @@
 module.exports = {
   accessLog: "dev",
   retentions: {
-    2419200: "4 Weeks",
+    2419200: "4 Weeks",,
+    3944614: "6 Weeks",
   },
-  defaultRetention: "2419200",
+  defaultRetention: "3944614",
   // expire every file after maxAge (eg never downloaded one-time files)
   maxAge: 3600 * 24 * 35, // 75 days
   showRetention: false,
@@ -15,8 +16,9 @@ module.exports = {
   uploadAppPath: "/",
   maxFileSize: Math.pow(2, 20) * 30000,
   maxBucketSize: Math.pow(2, 20) * 30000,
-  mailFrom: "Adonia Medienupload <noreply@adonia.de>",
-  mailTo: "medienupload@adonia.de",
+  mailFrom: "PsiTransfer <psitransfer@psi.cx>"
+  mailTemplate:
+    "mailto:?subject=File Transfer&body=Du kannst die Dateien hier herunterladen: %%URL%%",
   // "sslKeyFile": './tmp/cert.key',
   // "sslCertFile": './tmp/cert.pem',
 };

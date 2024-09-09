@@ -60,4 +60,9 @@ module.exports = {
   email: "E-Mail",
   name: "Name",
   information: "Informationen",
+  topicApplication: "Live-Band-Bewerbung",
+  topicDriverLicense: "Führerschein",
+  topicConcertHall: "Konzertsaal Informationen",
+  topicSouvenirMovie: "Erinnerungsfilm",
+  topicMiscellaneous: "Sonstiges",
 }
