@@ -55,4 +55,14 @@ module.exports = {
     "4838400": "8 Weeks"
   },
   uploadPassword: "Password for uploading",
+  message: "Nachricht",
+  topic: "Betreff",
+  email: "E-Mail",
+  name: "Name",
+  information: "Informationen",
+  topicApplication: "Live-Band-Bewerbung",
+  topicDriverLicense: "Führerschein",
+  topicConcertHall: "Konzertsaal Informationen",
+  topicSouvenirMovie: "Erinnerungsfilm",
+  topicMiscellaneous: "Sonstiges",
 }
