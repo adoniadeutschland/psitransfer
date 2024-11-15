@@ -55,6 +55,7 @@ module.exports = {
     "2419200": "4 Wochen",
     "4838400": "8 Wochen"
   },
+  uploadPassword: "Passwort für Upload",
   message: "Nachricht",
   topic: "Betreff",
   email: "E-Mail",
