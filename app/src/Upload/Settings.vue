@@ -89,7 +89,7 @@
               :value='message'
               @input="$store.commit('upload/MESSAGE', $event.target.value)"
               :disabled='disabled'
-              :placeholder="$root.lang.optional"
+              :placeholder="$root.lang.required"
               required=true
             )
             span.input-group-addon(

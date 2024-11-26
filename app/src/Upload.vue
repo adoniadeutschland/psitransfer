@@ -111,6 +111,7 @@
           && (this.requireBucketPassword && this.password || !this.requireBucketPassword)
           && this.name && mailPattern.test(this.email.toLowerCase().trim())
           && (this.topic != '')
+          && (this.message != '')
       }
     },
 
