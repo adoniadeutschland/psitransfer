@@ -76,6 +76,7 @@
               option(:value='$root.lang.topicDriverLicense') {{ $root.lang.topicDriverLicense }}
               option(:value='$root.lang.topicConcertHall') {{ $root.lang.topicConcertHall }}
               option(:value='$root.lang.topicSouvenirMovie') {{ $root.lang.topicSouvenirMovie }}
+              option(:value='$root.lang.topicSocialMedia') {{ $root.lang.topicSocialMedia }}
               option(:value='$root.lang.topicMiscellaneous') {{ $root.lang.topicMiscellaneous }}
             span.input-group-addon(
               :title='$root.lang.generateRandomPassword'

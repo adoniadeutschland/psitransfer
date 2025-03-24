@@ -64,5 +64,6 @@ module.exports = {
   topicDriverLicense: "Driver License",
   topicConcertHall: "Concert-Hall Informationen",
   topicSouvenirMovie: "Erinnerungsfilm",
+  topicSocialMedia: "Social Media",
   topicMiscellaneous: "Miscellaneous",
 }
