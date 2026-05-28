@@ -63,7 +63,7 @@ module.exports = {
   topicApplication: "Live-Band-Application",
   topicDriverLicense: "Driver License",
   topicConcertHall: "Concert-Hall Informationen",
-  topicSouvenirMovie: "Erinnerungsfilm",
+  topicSouvenirMovie: "Memorial film",
   topicSocialMedia: "Social Media",
   topicMiscellaneous: "Miscellaneous",
 }
