@@ -2,6 +2,9 @@
   .download-app
     a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
       icon(name="sync-alt")
+    select.form-control.input-sm.topic-filter(v-model="topicFilter", v-if="loggedIn")
+      option(value="") All topics
+      option(v-for="topic in topics", :value="topic") {{ topic }}
 
     .alert.alert-danger(v-show="error")
       strong
@@ -19,9 +22,6 @@
         |  login
 
     div(v-if="loggedIn")
-      select.form-control.topic-filter(v-model="topicFilter")
-        option(value="") All topics
-        option(v-for="topic in topics", :value="topic") {{ topic }}
       table.table.table-hover
         thead
           tr
@@ -219,7 +219,9 @@ tfoot {
   font-weight: bold;
 }
 .topic-filter {
+  position: absolute;
+  top: 15px;
+  right: 60px;
   width: auto;
-  margin-bottom: 15px;
 }
 </style>
