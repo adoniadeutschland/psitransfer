@@ -2,6 +2,9 @@
   .download-app
     a.btn.btn-sm.btn-info.btn-admin-refresh(@click='login()', title='Refresh', v-if="loggedIn")
       icon(name="sync-alt")
+    select.form-control.input-sm.topic-filter(v-model="topicFilter", v-if="loggedIn")
+      option(value="") All topics
+      option(v-for="topic in topics", :value="topic") {{ topic }}
 
     .alert.alert-danger(v-show="error")
       strong
@@ -92,16 +95,23 @@ export default {
       error: "",
       passwordWrong: false,
       expand: false,
-      sizeSum: 0
+      sizeSum: 0,
+      topicFilter: ""
     };
   },
 
   computed: {
+    topics() {
+      return [...new Set(Object.values(this.db).map(bucket => bucket[0].metadata.topic).filter(Boolean))].sort();
+    },
+
     sortedObject() {
-      const sortedKeys = Object.keys(this.db).sort((a, b) => {
-        // Custom sorting logic based on your requirements
-        return this.db[b][0].expireDate - this.db[a][0].expireDate;
-      });
+      const sortedKeys = Object.keys(this.db)
+        .filter(sid => !this.topicFilter || this.db[sid][0].metadata.topic === this.topicFilter)
+        .sort((a, b) => {
+          // Custom sorting logic based on your requirements
+          return this.db[b][0].expireDate - this.db[a][0].expireDate;
+        });
 
       const sortedObject = {};
       sortedKeys.forEach(key => {
@@ -207,5 +217,11 @@ export default {
 }
 tfoot {
   font-weight: bold;
+}
+.topic-filter {
+  position: absolute;
+  top: 15px;
+  right: 60px;
+  width: auto;
 }
 </style>
